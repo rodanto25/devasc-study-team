@@ -13,7 +13,7 @@ def connect_db():
     """Establece conexión con la base de datos."""
     return mysql.connector.connect(**config)
 
-# 🔹 CREAR Profesor
+# 🔹 CREAR 
 def create_profesor(clave_prof, nombre_prof, rubrica_id, rubrica_area_conocimiento_id):
     try:
         conn = connect_db()
@@ -30,7 +30,7 @@ def create_profesor(clave_prof, nombre_prof, rubrica_id, rubrica_area_conocimien
         cursor.close()
         conn.close()
 
-# 🔹 LEER Todos los Profesores
+# 🔹 LEER 
 def read_profesores():
     try:
         conn = connect_db()
@@ -44,8 +44,6 @@ def read_profesores():
     finally:
         cursor.close()
         conn.close()
-
-# 🔹 LEER Profesor por Clave
 def read_profesor_by_clave(clave_prof):
     try:
         conn = connect_db()
@@ -62,7 +60,7 @@ def read_profesor_by_clave(clave_prof):
         cursor.close()
         conn.close()
 
-# 🔹 ACTUALIZAR Profesor
+# 🔹 ACTUALIZAR 
 def update_profesor(clave_prof, nuevo_nombre_prof, nueva_rubrica_id, nueva_rubrica_area_conocimiento_id):
     try:
         conn = connect_db()
@@ -79,7 +77,7 @@ def update_profesor(clave_prof, nuevo_nombre_prof, nueva_rubrica_id, nueva_rubri
         cursor.close()
         conn.close()
 
-# 🔹 ELIMINAR Profesor
+# 🔹 ELIMINAR 
 def delete_profesor(clave_prof):
     try:
         conn = connect_db()
