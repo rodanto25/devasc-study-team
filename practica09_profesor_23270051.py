@@ -13,7 +13,7 @@ def connect_db():
     """Establece conexión con la base de datos."""
     return mysql.connector.connect(**config)
 
-# 🔹 CREAR 
+#  CREAR 
 def create_profesor(clave_prof, nombre_prof, rubrica_id, rubrica_area_conocimiento_id):
     try:
         conn = connect_db()
@@ -30,7 +30,7 @@ def create_profesor(clave_prof, nombre_prof, rubrica_id, rubrica_area_conocimien
         cursor.close()
         conn.close()
 
-# 🔹 LEER 
+#  LEER 
 def read_profesores():
     try:
         conn = connect_db()
@@ -51,22 +51,23 @@ def read_profesor_by_clave(clave_prof):
         cursor.execute("SELECT * FROM profesor WHERE clave_prof = %s", (clave_prof,))
         result = cursor.fetchone()
         if result:
-            print(f"Clave: {result[0]}, Nombre: {result[1]}, Rubrica ID: {result[2]}, Área Conocimiento ID: {result[3]}")
+            print("\nlista de Profesores:")
+            for row in result:
+                print(f"Clave: {row[0]}, Nombre: {row[1]}, Rubrica ID: {row[2]}, Área Conocimiento ID: {row[3]}")
         else:
-            print(f"No se encontró el profesor con clave: {clave_prof}")
+            print("no hay profesores registrados.")
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
         cursor.close()
         conn.close()
 
-# 🔹 ACTUALIZAR 
+#  ACTUALIZAR 
 def update_profesor(clave_prof, nuevo_nombre_prof, nueva_rubrica_id, nueva_rubrica_area_conocimiento_id):
     try:
         conn = connect_db()
         cursor = conn.cursor()
-        cursor.execute(
-            "UPDATE profesor SET nombre_prof = %s, rubrica_id = %s, rubrica_area_conocimiento_id = %s WHERE clave_prof = %s",
+        cursor.execute("UPDATE profesor SET nombre_prof = %s, rubrica_id = %s, rubrica_area_conocimiento_id = %s WHERE clave_prof = %s",
             (nuevo_nombre_prof, nueva_rubrica_id, nueva_rubrica_area_conocimiento_id, clave_prof)
         )
         conn.commit()
@@ -77,7 +78,7 @@ def update_profesor(clave_prof, nuevo_nombre_prof, nueva_rubrica_id, nueva_rubri
         cursor.close()
         conn.close()
 
-# 🔹 ELIMINAR 
+#  ELIMINAR 
 def delete_profesor(clave_prof):
     try:
         conn = connect_db()
@@ -90,3 +91,45 @@ def delete_profesor(clave_prof):
     finally:
         cursor.close()
         conn.close()
+#  MENU
+def main():
+    while True:
+        print("\n--- menu CRUD de profesor ---")
+        print("1. agregar profesor")
+        print("2. mostrar todos los profesores")
+        print("3. buscar profesor por clave")
+        print("4. actualizar profesor")
+        print("5. eliminar profesor")
+        print("6. salir")
+
+        opcion = input("seleccionar una opción (1-6): ")
+
+        if opcion == '1':
+            clave = input("ingrese la clave del profesor: ")
+            nombre = input("ingrese el nombre del profesor: ")
+            rubrica_id = input("ingrese el ID de la rubrica: ")
+            area_conocimiento_id = input("ingrese el ID del area de conocimiento: ")
+            create_profesor(clave, nombre, rubrica_id, area_conocimiento_id)
+        elif opcion == '2':
+            read_profesores()
+        elif opcion == '3':
+            clave = input("ingrese la clave del profesor a buscar: ")
+            read_profesor_by_clave(clave)
+        elif opcion == '4':
+            clave = input("ingrese la clave del profesor a actualizar: ")
+            nuevo_nombre = input("ingrese el nuevo nombre del profesor: ")
+            nueva_rubrica_id = input("ingrese el nuevo ID de la rúbrica: ")
+            nueva_area_conocimiento_id = input("ingrese el nuevo ID del área de conocimiento: ")
+            update_profesor(clave, nuevo_nombre, nueva_rubrica_id, nueva_area_conocimiento_id)
+        elif opcion == '5':
+            clave = input("ingrese la clave del profesor a eliminar: ")
+            delete_profesor(clave)
+        elif opcion == '6':
+            print("adios")
+            break
+        else:
+            print("intente de nuevo")
+
+#  MAIN
+if __name__ == "__main__":
+    main()
